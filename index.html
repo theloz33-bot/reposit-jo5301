@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ludyte H3 — Prompt Skill &amp; Pack</title>
+<meta name="description" content="The Ludyte / MiniMax H3 prompt skill: five routing modes, the six-field skeleton, thirteen camera moves, ten production templates and a pre-send checklist.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0b0d'/%3E%3Crect x='7' y='11' width='18' height='2' fill='%23f3c15e'/%3E%3Crect x='7' y='16' width='12' height='2' fill='%23f3c15e'/%3E%3Crect x='7' y='21' width='7' height='2' fill='%23f3c15e'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#0a0b0d; --bg2:#0d0f12; --panel:#111419; --panel2:#151920;
+  --line:#23272e; --line2:#2f353d;
+  --ink:#ecebe6; --text:#cfd3d8; --muted:#9aa1aa; --dim:#6d747d;
+  --accent:#f3c15e; --accent-ink:#0a0b0d;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --wrap:1120px; --r:14px;
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:var(--sans); font-size:16px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(900px 480px at 12% -8%, rgba(243,193,94,.07), transparent 70%),
+                   radial-gradient(700px 420px at 92% 2%, rgba(120,160,255,.045), transparent 70%);
+  background-repeat:no-repeat;
+}
+::selection{background:rgba(243,193,94,.28); color:#fff}
+a{color:inherit}
+.skip{position:absolute; left:-9999px}
+.skip:focus{left:12px; top:12px; z-index:99; background:var(--accent); color:#000; padding:8px 12px; border-radius:6px}
+
+.wrap{width:100%; max-width:var(--wrap); margin:0 auto; padding:0 22px}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(44px,8vw,92px) 0 clamp(28px,4vw,44px)}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--dim)}
+.brand svg{display:block}
+.brand b{color:var(--accent); font-weight:600}
+h1{margin:22px 0 0; font-size:clamp(2.5rem,7.4vw,4.7rem); line-height:.98; letter-spacing:-.035em;
+  font-weight:640; color:#fff; max-width:16ch}
+h1 em{font-style:normal; color:var(--accent)}
+.lede{margin:22px 0 0; max-width:62ch; font-size:clamp(1rem,1.6vw,1.12rem); color:var(--muted)}
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px}
+.chip{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); border:1px solid var(--line); background:#0f1216; padding:6px 10px; border-radius:999px}
+.chip b{color:var(--ink); font-weight:600}
+
+/* ---------- nav ---------- */
+.nav{position:sticky; top:0; z-index:30; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  background:rgba(10,11,13,.86); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px)}
+.nav .wrap{display:flex; gap:4px; align-items:center; overflow-x:auto; scrollbar-width:none}
+.nav .wrap::-webkit-scrollbar{display:none}
+.nav a{flex:0 0 auto; text-decoration:none; font-family:var(--mono); font-size:12px; letter-spacing:.04em;
+  color:var(--dim); padding:14px 14px; border-bottom:2px solid transparent; white-space:nowrap}
+.nav a:hover{color:var(--text)}
+.nav a b{color:var(--dim); font-weight:400; margin-right:6px}
+.nav a.on{color:#fff; border-bottom-color:var(--accent)}
+.nav a.on b{color:var(--accent)}
+
+/* ---------- sections ---------- */
+section{padding:clamp(52px,7vw,86px) 0 0; scroll-margin-top:56px}
+.sec-head{max-width:70ch}
+.kicker{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent)}
+h2{margin:12px 0 0; font-size:clamp(1.7rem,3.6vw,2.5rem); line-height:1.1; letter-spacing:-.025em; color:#fff; font-weight:620}
+.sec-head p{margin:14px 0 0; color:var(--muted); font-size:1.02rem; max-width:64ch}
+h3{margin:0 0 10px; font-size:1.02rem; letter-spacing:-.01em; color:#fff; font-weight:600}
+.sub{margin:clamp(30px,4vw,44px) 0 14px; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap}
+.sub .n{font-family:var(--mono); font-size:10.5px; color:var(--dim); letter-spacing:.14em}
+.sub h3{margin:0}
+.sub p{margin:0; color:var(--dim); font-size:.92rem}
+
+/* ---------- cards ---------- */
+.grid{display:grid; gap:14px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.card{border:1px solid var(--line); border-radius:var(--r); background:linear-gradient(180deg,#12151a,#0e1114);
+  padding:20px 20px 18px}
+.card .num{font-family:var(--mono); font-size:11px; color:var(--accent); letter-spacing:.14em}
+.card h4{margin:10px 0 8px; font-size:1.06rem; color:#fff; font-weight:600; letter-spacing:-.01em}
+.card p{margin:0; font-size:.94rem; color:var(--muted); line-height:1.6}
+
+.note{margin:16px 0 0; padding:14px 16px; border-left:2px solid var(--accent); background:#101317;
+  border-radius:0 10px 10px 0; color:var(--muted); font-size:.94rem}
+.note b{color:var(--ink); font-weight:600}
+
+/* ---------- table ---------- */
+.tablewrap{border:1px solid var(--line); border-radius:var(--r); overflow:hidden; background:#0e1114}
+table{width:100%; border-collapse:collapse; font-size:.94rem}
+thead th{text-align:left; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--dim); font-weight:500; padding:12px 16px; background:#0f1216; border-bottom:1px solid var(--line)}
+tbody td{padding:13px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--muted)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#101418}
+td.k{color:var(--ink); font-weight:500}
+.mode{font-family:var(--mono); font-size:11.5px; color:var(--accent); letter-spacing:.04em; white-space:nowrap}
+
+/* ---------- snippet ---------- */
+.snip{border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#0b0d10; margin:10px 0 0}
+.snip-bar{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:8px 9px 8px 13px;
+  border-bottom:1px solid var(--line); background:#0f1216}
+.snip-label{font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--dim)}
+.copy{flex:0 0 auto; font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); background:#171b21; border:1px solid var(--line2); border-radius:6px; padding:5px 10px;
+  cursor:pointer; transition:background .15s, color .15s, border-color .15s}
+.copy:hover{color:#fff; border-color:#454d57; background:#1c2128}
+.copy.done{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+pre{margin:0; padding:15px 15px 16px; font-family:var(--mono); font-size:12.4px; line-height:1.62;
+  color:#d3d7dc; white-space:pre-wrap; overflow-wrap:anywhere; tab-size:2}
+
+/* ---------- lists ---------- */
+ul.plain{margin:12px 0 0; padding:0; list-style:none}
+ul.plain li{position:relative; padding:9px 0 9px 20px; border-bottom:1px solid var(--line); font-size:.95rem; color:var(--muted)}
+ul.plain li:last-child{border-bottom:0}
+ul.plain li::before{content:""; position:absolute; left:2px; top:19px; width:5px; height:5px; border-radius:50%; background:var(--accent)}
+
+.budget{display:grid; gap:10px; margin-top:12px}
+.budget .row{display:grid; grid-template-columns:120px 1fr auto; gap:12px; align-items:center}
+.budget .row .lab{font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.06em}
+.budget .bar{height:8px; border-radius:99px; background:#1a1e24; overflow:hidden}
+.budget .bar i{display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,#6b5320,var(--accent))}
+.budget .val{font-family:var(--mono); font-size:11px; color:var(--ink); white-space:nowrap}
+
+/* ---------- negative layers ---------- */
+.layers{display:grid; gap:12px; margin-top:16px}
+.layer{display:grid; grid-template-columns:56px 1fr; gap:16px; align-items:start; padding:18px;
+  border:1px solid var(--line); border-radius:var(--r); background:#0e1114}
+.layer .tag{font-family:var(--mono); font-size:12px; letter-spacing:.1em; color:var(--accent);
+  border:1px solid #3a3222; background:#151208; border-radius:8px; padding:6px 0; text-align:center}
+.layer h4{margin:0 0 6px; font-size:1rem; color:#fff; font-weight:600}
+.layer p{margin:0; font-size:.94rem; color:var(--muted)}
+.layer em{color:var(--ink); font-style:normal}
+
+/* ---------- filter bar ---------- */
+.tools{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+  margin:clamp(26px,4vw,38px) 0 18px}
+.filters{display:flex; flex-wrap:wrap; gap:6px}
+.fbtn{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+  background:#0f1216; border:1px solid var(--line); border-radius:999px; padding:7px 12px; cursor:pointer}
+.fbtn:hover{color:#fff; border-color:var(--line2)}
+.fbtn.on{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+.search{position:relative; flex:1 1 220px; max-width:300px}
+.search input{width:100%; font-family:var(--mono); font-size:12px; color:var(--ink); background:#0f1216;
+  border:1px solid var(--line); border-radius:999px; padding:9px 14px; outline:none}
+.search input:focus{border-color:var(--line2); background:#12161b}
+.search input::placeholder{color:var(--dim)}
+.count{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim);
+  margin:0 0 16px}
+
+/* ---------- template cards ---------- */
+.tgrid{display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(min(100%,430px),1fr))}
+.tpl{border:1px solid var(--line); border-radius:var(--r); background:linear-gradient(180deg,#12151a,#0d1013);
+  padding:18px 18px 16px; display:flex; flex-direction:column}
+.tpl.hide{display:none}
+.tpl-head{display:flex; gap:12px; align-items:baseline; justify-content:space-between}
+.tpl .id{font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--accent)}
+.tpl h3{margin:8px 0 6px; font-size:1.12rem}
+.tpl .meta{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); line-height:1.7}
+.why{margin:14px 0 0; padding-top:12px; border-top:1px dashed var(--line2); font-size:.9rem; color:var(--muted)}
+.why b{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--dim); font-weight:500; margin-bottom:6px}
+.empty{display:none; padding:26px; border:1px dashed var(--line2); border-radius:var(--r); color:var(--dim); text-align:center}
+.empty.on{display:block}
+
+/* ---------- library ---------- */
+.lgrid{display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
+.lib{border:1px solid var(--line); border-radius:var(--r); background:#0e1114; padding:17px; display:flex; flex-direction:column}
+.lib .kind{font-family:var(--mono); font-size:10px; letter-spacing:.11em; text-transform:uppercase; color:var(--dim)}
+.lib h3{margin:7px 0 0; font-size:1rem}
+.lib .tip{margin:12px 0 0; font-size:.88rem; color:var(--dim); border-left:2px solid var(--line2); padding-left:10px}
+
+/* ---------- checklist ---------- */
+.checkwrap{border:1px solid var(--line); border-radius:var(--r); background:#0e1114; padding:6px 18px}
+.ck{display:flex; gap:14px; align-items:flex-start; padding:15px 0; border-bottom:1px solid var(--line); cursor:pointer}
+.ck:last-of-type{border-bottom:0}
+.ck input{appearance:none; -webkit-appearance:none; flex:0 0 auto; width:18px; height:18px; margin:3px 0 0;
+  border:1.5px solid var(--line2); border-radius:5px; background:#0b0d10; cursor:pointer; position:relative}
+.ck input:checked{background:var(--accent); border-color:var(--accent)}
+.ck input:checked::after{content:""; position:absolute; left:5px; top:1px; width:5px; height:10px;
+  border:solid var(--accent-ink); border-width:0 2px 2px 0; transform:rotate(45deg)}
+.ck span{font-size:.96rem; color:var(--muted); line-height:1.55}
+.ck input:checked + span{color:var(--dim); text-decoration:line-through; text-decoration-color:#3a4048}
+.checkfoot{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0 16px;
+  border-top:1px solid var(--line); font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim)}
+.checkfoot button{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  background:#171b21; border:1px solid var(--line2); border-radius:6px; padding:6px 11px; cursor:pointer}
+.checkfoot button:hover{color:#fff}
+
+/* ---------- footer ---------- */
+footer{margin-top:clamp(60px,9vw,110px); border-top:1px solid var(--line); padding:30px 0 54px}
+.fgrid{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+footer .mark{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink)}
+footer p{margin:8px 0 0; font-size:.86rem; color:var(--dim); max-width:44ch}
+
+.totop{position:fixed; right:18px; bottom:18px; z-index:40; width:40px; height:40px; border-radius:50%;
+  border:1px solid var(--line2); background:rgba(17,20,25,.9); color:var(--muted); cursor:pointer;
+  font-size:15px; line-height:1; opacity:0; pointer-events:none; transition:opacity .2s}
+.totop.on{opacity:1; pointer-events:auto}
+.totop:hover{color:#fff; border-color:#4a525c}
+
+@media (max-width:640px){
+  body{font-size:15px}
+  .hero{padding-top:38px}
+  .card{padding:17px}
+  .layer{grid-template-columns:44px 1fr; gap:12px; padding:15px}
+  table{font-size:.88rem}
+  thead th,tbody td{padding:10px 12px}
+  .budget .row{grid-template-columns:96px 1fr auto}
+  .nav a{padding:13px 11px}
+}
+@media print{
+  body{background:#fff; color:#111; background-image:none}
+  .nav,.totop,.copy,.tools,.skip{display:none !important}
+  .card,.tpl,.lib,.layer,.tablewrap,.checkwrap,.snip{background:#fff; border-color:#ccc}
+  h1,h2,h3,h4,td.k,footer .mark{color:#000}
+  .lede,.card p,td,pre,.why,.lib .tip,.ck span{color:#222}
+  pre{font-size:9.5pt}
+  section{padding-top:26px; break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#rules">Skip to content</a>
+<header class="hero"><div class="wrap">
+<div class="brand"><svg width="20" height="20" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#12151a" stroke="#23272e"/><rect x="7" y="11" width="18" height="2" fill="#f3c15e"/><rect x="7" y="16" width="12" height="2" fill="#8a7c55"/><rect x="7" y="21" width="7" height="2" fill="#4a4436"/></svg><span>Ludyte <b>·</b> MiniMax H3 <b>·</b> Prompt Skill</span></div>
+<h1>Prompt Skill <em>&amp;</em> Pack</h1>
+<p class="lede">Everything a shot needs to survive the render: how to route a prompt by what you attach, the six fields the model reads in order, thirteen camera moves written as sentences, and ten production templates that already shipped. Anything below copies with one tap.</p>
+<div class="chips"><span class="chip"><b>5</b> modes</span><span class="chip"><b>6</b> fields</span><span class="chip"><b>13</b> camera moves</span><span class="chip"><b>10</b> templates</span><span class="chip"><b>9</b> short patterns</span><span class="chip"><b>6</b> checks</span></div>
+</div></header>
+<nav class="nav" aria-label="Sections"><div class="wrap"><a href="#rules"><b>01</b> Skill</a><a href="#camera"><b>02</b> Camera</a><a href="#templates"><b>03</b> Templates</a><a href="#library"><b>04</b> Library</a><a href="#checklist"><b>05</b> Checklist</a></div></nav>
+<main>
+<section id="rules"><div class="wrap">
+<div class="sec-head">
+<div class="kicker">01 — The skill</div>
+<h2>One page, four rules, one skeleton</h2>
+<p>The attached references decide the format; the format decides which fields exist. Getting this wrong is the single most common reason a video prompt comes back flat — not the adjectives.</p>
+</div>
+<div class="sub"><span class="n">1.1</span><h3>Three laws that outrank every template</h3></div>
+<div class="grid g3">
+<div class="card"><div class="num">01</div><h4>One role per reference image</h4><p>A reference carries one job: this face, this outfit, this place. Stack a full-body sheet into a face slot and the model averages the two, which is how a character ends up wearing someone else's jaw. Face, outfit and location get their own image and their own sentence in the prompt.</p></div>
+<div class="card"><div class="num">02</div><h4>One camera move, one action per shot</h4><p>Two moves in one sentence is read as two shots. The model will split it, and the split lands mid-sentence with the background repainted. If a cut is needed, cut it in the edit, where it is free.</p></div>
+<div class="card"><div class="num">03</div><h4>The prompt is a plan; the timeline is the truth</h4><p>A timecode inside a shot is a wish. What the model honours is the end state of each beat: where the hand is, what the face is doing, which way the body has turned. Write the end state, then trim to the beat in the editor and let the picture land on it.</p></div>
+</div>
+<div class="sub"><span class="n">1.2</span><h3>Route the prompt by what you attach</h3><p>five modes — pick one before you type</p></div>
+<div class="tablewrap"><table><thead><tr><th>Attached material</th><th>Mode</th><th>What the prompt becomes</th></tr></thead><tbody>
+<tr><td class="k">No references</td><td class="mode">T2VA</td><td>Three fields. Style stated in words.</td></tr>
+<tr><td class="k">One image as the first frame</td><td class="mode">I2VA</td><td>Alignment sentence, then three fields.</td></tr>
+<tr><td class="k">First frame and last frame</td><td class="mode">FL2VA</td><td>Describe the path between the two images.</td></tr>
+<tr><td class="k">Last frame only</td><td class="mode">L2VA</td><td>Infer a plausible start, land on the image.</td></tr>
+<tr><td class="k">Any other role — face, costume, prop, place, voice</td><td class="mode">Ref2VA</td><td>Six sections, every reference labelled.</td></tr>
+</tbody></table></div>
+<div class="note"><b>The first line is the alignment sentence.</b> It goes above everything else, it names the picture and the shot number, and its <span class="mode">S.SS</span> is the real length of the clip. It tells the model that frame zero is a fact, not a mood.</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">I2VA — FIRST FRAME</span><button class="copy" type="button" aria-label="Copy I2VA — FIRST FRAME">Copy</button></div><pre>For the target video, at 0.00 seconds into the target video, &lt;Picture 1&gt; (from [Shot 1]) is fully referenced.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">FL2VA — FIRST AND LAST</span><button class="copy" type="button" aria-label="Copy FL2VA — FIRST AND LAST">Copy</button></div><pre>How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot N) aligns with the S.SS-second mark of the target video.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">L2VA — LAST FRAME</span><button class="copy" type="button" aria-label="Copy L2VA — LAST FRAME">Copy</button></div><pre>How the reference pictures align with the target video — &lt;Picture 1&gt; (from [Shot N]) aligns with the S.SS-second mark of the target video.</pre></div>
+<div class="sub"><span class="n">1.3</span><h3>The six fields, in this order</h3><p>Ref2VA · field names, spelling and the blank line between fields stay unchanged</p></div>
+<div class="tablewrap"><table><thead><tr><th>Field</th><th>What goes in it</th></tr></thead><tbody>
+<tr><td class="mode" style="white-space:normal">subject_definitions</td><td>Who and what, by picture number. One sentence per subject, nothing optional in it.</td></tr>
+<tr><td class="mode" style="white-space:normal">summary</td><td>One paragraph: the whole clip, plus its safety rule — what must never happen in frame.</td></tr>
+<tr><td class="mode" style="white-space:normal">retention_analysis</td><td>What stays and what changes, per shot. fully_preserved / partially_preserved.</td></tr>
+<tr><td class="mode" style="white-space:normal">detailed_description</td><td>The timeline, cut by cut, each cut ending in a physical state.</td></tr>
+<tr><td class="mode" style="white-space:normal">overall_soundscape</td><td>Environment, physical sound, non-verbal voices. No dialogue, no lyrics.</td></tr>
+<tr><td class="mode" style="white-space:normal">non_diegetic_music</td><td>The score the audience hears. N/A when the music comes from the edit.</td></tr>
+</tbody></table></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">REF2VA SKELETON — FILL IN THE ANGLE BRACKETS</span><button class="copy" type="button" aria-label="Copy REF2VA SKELETON — FILL IN THE ANGLE BRACKETS">Copy</button></div><pre>subject_definitions: &lt;Subject 1&gt; is &lt;who&gt; in &lt;Picture 1&gt;, &lt;age&gt;, &lt;hair&gt;, &lt;wardrobe&gt;, &lt;one detail&gt;. &lt;Subject 2&gt; is &lt;who&gt; in &lt;Picture 2&gt;, &lt;wardrobe&gt;.
+
+summary: The target video is a &lt;length&gt;-second &lt;format&gt; sequence in &lt;n&gt; shots, &lt;the arc in one line&gt;, with &lt;the safety rule: what never happens&gt;.
+
+retention_analysis: &lt;Subject 1&gt; (appears in [Shot 1]-[Shot N]): fully_preserved - &lt;face, hair, wardrobe&gt;; partially_preserved - &lt;the one thing allowed to change&gt;. &lt;Subject 2&gt;: fully_preserved - &lt;face, wardrobe&gt;.
+
+detailed_description: Live-action, cinematic, &lt;light and place in one clause&gt;. [Shot 1] &lt;framing and action&gt;. [Shot 2] At 00:02.500, &lt;the cut, the framing, the action, one change of state&gt;. [Shot 3] At &lt;S.SS&gt;, &lt;...&gt;. The camera &lt;move&gt; with &lt;amplitude&gt; amplitude at &lt;speed&gt; speed [&lt;Move&gt;].
+
+overall_soundscape: &lt;footfalls, cloth, breath, room tone&gt;. No other voices.
+
+non_diegetic_music: N/A</pre></div>
+<div class="sub"><span class="n">1.4</span><h3>Speaking: the tag, the language, the budget</h3></div>
+<div class="grid g3" style="margin-top:4px">
+<div class="card"><div class="num">TAG</div><h4>(S1), (S2) — never renumbered</h4><p>A character who speaks or sings gets a speaker ID. It is assigned once and kept across every part of the song, so part four does not introduce a new voice for the same person.</p></div>
+<div class="card"><div class="num">LINE</div><h4>&lt;d&gt;[Korean] line&lt;/d&gt;</h4><p>Every sung or spoken line sits inside <span class="mode">&lt;d&gt;</span> with a language tag and nothing else: no stage directions, no translation, no mouth notes.</p></div>
+<div class="card"><div class="num">MOUTH</div><h4>State the closed mouth</h4><p>A mouth that should be shut is stated shut, with a time: <em>before 2.30 s her mouth is closed</em>. Left to chance, the model starts singing at frame one.</p></div>
+</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">DIALOGUE LINE — THE SHAPE</span><button class="copy" type="button" aria-label="Copy DIALOGUE LINE — THE SHAPE">Copy</button></div><pre>(S1) sings: &lt;d&gt;[Korean] &lt;THE LINE, AND ONLY THE LINE&gt;&lt;/d&gt;. Before 2.30 s her mouth is closed.</pre></div>
+<div class="budget">
+<div class="row"><span class="lab">5–8 s · one shot</span><span class="bar"><i style="width:38%"></i></span><span class="val">120–250 words</span></div>
+<div class="row"><span class="lab">10–15 s · with cuts</span><span class="bar"><i style="width:78%"></i></span><span class="val">250–500 words</span></div>
+</div>
+<div class="note">Length targets are a budget, not a minimum. A prompt inside a prompt — a Russian doll — counts against the same budget and is read in order, so the nested block has to earn its words.</div>
+<div class="sub"><span class="n">1.5</span><h3>The negative defense: three layers, in this order</h3><p>why "no X" alone fails</p></div>
+<div class="note" style="margin-top:0">A negative line steers a sample; it does not remove the affordance. A model that renders text well will invent text, and a signboard is rendered because the scene asked for one — so subtract by design first, and by denial last.</div>
+<div class="layers">
+<div class="layer"><div class="tag">L1</div><div><h4>Design the place</h4><p>Choose a location where the unwanted thing has no reason to exist. A riverbank at pre-dawn has no advertising. Distant buildings are kept as haze silhouettes on purpose, so there is no readable facade for the model to letter.</p></div></div>
+<div class="layer"><div class="tag">L2</div><div><h4>Describe the surface positively</h4><p>Every surface gets a positive description — plain, unmarked, matte, unlabelled — and the absence rides on the object itself: <em>a plain white rectangular kite with one solid circle near its top edge, no letters or symbols</em>. Geometry in words first, then one short absence.</p></div></div>
+<div class="layer"><div class="tag">L3</div><div><h4>Four short negatives, at the very end</h4><p>Text · logos and signage · subtitles and watermark · duplicated faces. Four items is a boundary; a longer list is read as a mood and starts costing you the rest of the prompt.</p></div></div>
+</div>
+<div class="note"><b>One named exception beats a blanket denial.</b> <em>Only &lt;NAME 1&gt; may wear glasses; no other character wears glasses at any point</em> works where "no glasses" invites four background characters in spectacles.</div>
+<div class="sub"><span class="n">1.6</span><h3>Anatomy of a shot prompt — eight beats</h3></div>
+<div class="tablewrap"><table><thead><tr><th>Beat</th><th>What it holds</th></tr></thead><tbody>
+<tr><td class="k" style="white-space:nowrap">Subject</td><td>Age, wardrobe, one distinguishing detail. The same words in every shot.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Action</td><td>A change of state, not an adjective. "Looks down, exhales, lifts her eyes" renders as performance.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Place</td><td>Two or three concrete details. Wet asphalt, a steam vent, hanging cables.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Camera</td><td>Move, height, lens. One move per shot.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Lighting</td><td>Name the source, not the mood: a lamp on the left, a cool window behind.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Grade</td><td>Two colours and a contrast note.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Format</td><td>Aspect ratio and where the subject sits in frame.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Negatives</td><td>Four short items, last line, always the same four.</td></tr>
+</tbody></table></div>
+</div></section>
+<section id="camera"><div class="wrap">
+<div class="sec-head">
+<div class="kicker">02 — Camera</div>
+<h2>Thirteen moves, three axes</h2>
+<p>Do not stack tags at the end of a sentence. Write the move as the action of the sentence, then let one tag confirm it. Amplitude and speed are worth writing only when they are not the default.</p>
+</div>
+<div class="tablewrap" style="margin-top:28px"><table><thead><tr><th>Move</th><th>What it does</th><th>When to use it</th></tr></thead><tbody>
+<tr><td class="k" style="white-space:nowrap">Push In</td><td>The camera body travels forward; parallax included.</td><td>The moment a character decides.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Pull Out</td><td>The camera body travels back; the world arrives.</td><td>The last line of a section.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Zoom In / Out</td><td>Focal length changes; the frame flattens.</td><td>Almost never — it reads as a photo.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Pan Left / Right</td><td>The lens turns from a fixed spot.</td><td>Revealing what is beside the subject.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Truck Left / Right</td><td>The camera slides sideways, parallel to the subject.</td><td>Walking beside someone.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Tilt Up / Down</td><td>The lens turns up or down from a fixed spot.</td><td>Following a kite, a tower, a fall.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Pedestal Up / Down</td><td>The whole camera rises or drops.</td><td>Revealing a crowd from a face.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Arc Shot</td><td>A curve around the subject.</td><td>Two people circling each other.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Tracking Shot</td><td>Follows a moving subject.</td><td>Running, driving, falling.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Static Shot</td><td>Nothing moves but the subject.</td><td>One held face, one verse.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Shake Slightly / Strongly</td><td>Handheld instability.</td><td>Impact, panic, a live crowd.</td></tr>
+<tr><td class="k" style="white-space:nowrap">POV</td><td>The subject's own eyeline.</td><td>A phone screen, a doorway, a fall.</td></tr>
+<tr><td class="k" style="white-space:nowrap">Roll CW / CCW</td><td>The frame rotates on the lens axis.</td><td>A dream, a loss of control.</td></tr>
+</tbody></table></div>
+<div class="sub"><span class="n">2.1</span><h3>Amplitude and speed</h3><p>two modifiers, not two moods</p></div>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+<div class="card"><div class="num mode">with small amplitude</div><p style="margin-top:10px">The frame reframes a little.</p></div>
+<div class="card"><div class="num mode">with large amplitude</div><p style="margin-top:10px">The frame is rebuilt.</p></div>
+<div class="card"><div class="num mode">at slow speed</div><p style="margin-top:10px">One move takes most of the clip.</p></div>
+<div class="card"><div class="num mode">at fast speed</div><p style="margin-top:10px">The move lands in the first second.</p></div>
+</div>
+<div class="sub"><span class="n">2.2</span><h3>Tag-to-sentence mapping</h3><p>the move is the verb; the tag is the confirmation</p></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">EXAMPLE 01</span><button class="copy" type="button" aria-label="Copy EXAMPLE 01">Copy</button></div><pre>The camera pushes in with small amplitude at slow speed toward the folded letter in her hands. [Push in]</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">EXAMPLE 02</span><button class="copy" type="button" aria-label="Copy EXAMPLE 02">Copy</button></div><pre>The camera pans right with large amplitude at fast speed, revealing the open doorway. [Pan right]</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">EXAMPLE 03</span><button class="copy" type="button" aria-label="Copy EXAMPLE 03">Copy</button></div><pre>The camera holds a static shot as the runner exits the frame. [Static shot]</pre></div>
+<div class="note">Two moves in one sentence is read as two shots, and the split lands mid-sentence with the background repainted. If the cut is wanted, cut it in the edit.</div>
+<div class="sub"><span class="n">2.3</span><h3>The shot spec, one line</h3><p>move, height and lens in a single clause is a complete camera instruction</p></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">TEMPLATE</span><button class="copy" type="button" aria-label="Copy TEMPLATE">Copy</button></div><pre>&lt;SUBJECT: age, hair, wardrobe, one detail&gt; &lt;ACTION: verb, verb, verb — a change of state&gt;. The camera &lt;move&gt; with &lt;small|large&gt; amplitude at &lt;slow|fast&gt; speed toward &lt;target&gt; [&lt;Move&gt;]. Lighting: &lt;source&gt; as key, &lt;source&gt; as rim, no fill. Grade: &lt;two colours&gt;, &lt;contrast note&gt;. &lt;Aspect ratio&gt;, subject on &lt;placement&gt;. No text, no logos, no watermark, no duplicated faces.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">FILLED</span><button class="copy" type="button" aria-label="Copy FILLED">Copy</button></div><pre>A woman in her late twenties, black bob, mustard cardigan, stands at a doorway and looks back over her shoulder. The camera pushes in with small amplitude at slow speed toward her face [Push in]. Lighting: doorway light as key, cool window as rim, no fill. Grade: amber and teal, controlled contrast. 16:9, subject on the right third. No text, no logos, no watermark, no duplicated faces.</pre></div>
+</div></section>
+<section id="templates"><div class="wrap">
+<div class="sec-head">
+<div class="kicker">03 — Templates</div>
+<h2>Ten templates that survived the render</h2>
+<p>Each one is a workflow, not a paragraph: a still to generate, a sentence to paste, or a line to keep unchanged across every cut. Replace what is inside angle brackets; leave the rest alone.</p>
+</div>
+<div class="tools">
+<div class="filters" role="group" aria-label="Filter templates">
+<button class="fbtn on" type="button" data-filter="all">All</button>
+<button class="fbtn" type="button" data-filter="locks">Locks &amp; stills</button>
+<button class="fbtn" type="button" data-filter="cut">Single cut</button>
+<button class="fbtn" type="button" data-filter="song">Song &amp; lip-sync</button>
+<button class="fbtn" type="button" data-filter="action">Action</button>
+<button class="fbtn" type="button" data-filter="commercial">Commercial</button>
+<button class="fbtn" type="button" data-filter="planning">Planning</button>
+</div>
+<div class="search"><input id="tsearch" type="search" placeholder="Search templates…" aria-label="Search templates" autocomplete="off"></div>
+</div>
+<p class="count" id="tcount"></p>
+<div class="tgrid" id="tgrid">
+<article class="tpl" data-tags="locks">
+<div class="tpl-head"><span class="id">T01</span></div>
+<h3>The Identity Lock</h3>
+<div class="meta">IMAGE · 16:9 · ONE SENTENCE, PASTED INTO EVERY PROMPT</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">CHARACTER SHEET PROMPT</span><button class="copy" type="button" aria-label="Copy CHARACTER SHEET PROMPT">Copy</button></div><pre>Character reference sheet, photorealistic, soft natural light, plain light-grey studio background. Three views side by side of the same person: front portrait, full-body front, full-body three-quarter. &lt;NAME&gt;, a Korean woman in her late twenties with a shoulder-length straight black bob and side-swept bangs, wearing an oversized mustard-yellow knit cardigan over a plain white T-shirt, light-wash straight jeans and plain white canvas sneakers, no jewelry. Calm, gentle expression, mouth closed. Plain unmarked clothing, no text, no logos, no labels anywhere.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">THE LOCK STRING — PASTE VERBATIM, EVERY CUT</span><button class="copy" type="button" aria-label="Copy THE LOCK STRING — PASTE VERBATIM, EVERY CUT">Copy</button></div><pre>&lt;NAME&gt;, a Korean woman in her late twenties with a shoulder-length straight black bob and side-swept bangs, wearing an oversized mustard-yellow knit cardigan over a plain white T-shirt, light-wash straight jeans and plain white canvas sneakers, no jewelry</pre></div>
+<p class="why"><b>Why it works</b>Nineteen cuts, and the face held, because the description is one sentence with nothing optional in it: age, hair, the exact garment colours, and one absence (no jewelry). The sheet gives the model a face; the lock string stops it drifting. Write the lock once, paste it without editing — and when two cuts disagree, rebuild the key still, because editing the prompt does not fix a changed face.</p>
+</article>
+<article class="tpl" data-tags="locks">
+<div class="tpl-head"><span class="id">T02</span></div>
+<h3>The Prop Lock</h3>
+<div class="meta">IMAGE + VIDEO · ANY OBJECT THAT REPEATS</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">HERO PROP</span><button class="copy" type="button" aria-label="Copy HERO PROP">Copy</button></div><pre>a plain white rectangular Korean shield kite with a round hole in its center and a single solid indigo circle painted near its top edge, no letters or symbols, trailing a long thin white string to a simple wooden kite reel</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">CROWD VERSION</span><button class="copy" type="button" aria-label="Copy CROWD VERSION">Copy</button></div><pre>plain kites in soft solid colors (white, sky blue, pale yellow, coral), no letters, logos or patterns</pre></div>
+<p class="why"><b>Why it works</b>A prop that appears more than twice is a character, and it drifts faster than a face does. Two things make this lock work: geometry described in words (rectangular, centre hole, one circle, near the top edge) and an explicit absence (no letters, no symbols). Copy the same two lines into the key still and the video prompt; a kite that gains a logo between cuts is the same failure as a face that changes.</p>
+</article>
+<article class="tpl" data-tags="locks">
+<div class="tpl-head"><span class="id">T03</span></div>
+<h3>The Location Plate</h3>
+<div class="meta">IMAGE · 16:9 · NO PEOPLE, ONE PLATE PER TIME OF DAY</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">BACKGROUND PLATE</span><button class="copy" type="button" aria-label="Copy BACKGROUND PLATE">Copy</button></div><pre>Photorealistic cinematic wide shot, 16:9, background plate. A wide grassy riverbank park on the Han River at pre-dawn, soft blue-grey light with a faint peach glow on the horizon, low mist over calm river water, a long steel arch bridge silhouetted in the far distance, distant apartment towers softened into haze, empty lawn. No people, no silhouettes, no hands. Cinematic 35mm film look, fine grain, no text, no signage, no logos, no billboards, no readable letters anywhere.</pre></div>
+<p class="why"><b>Why it works</b>One plate per location and time of day, generated empty, then reused under every key still in that section. It fixes horizon height, weather and colour, so five separately generated cuts feel like one afternoon. The last sentence is the important part: distant buildings are haze silhouettes on purpose, because a model that renders text well will happily invent a signboard on a readable facade.</p>
+</article>
+<article class="tpl" data-tags="locks">
+<div class="tpl-head"><span class="id">T04</span></div>
+<h3>The Reference Map</h3>
+<div class="meta">IMAGE · THREE REFERENCES · FACE, OUTFIT, PLACE</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">KEY STILL PROMPT</span><button class="copy" type="button" aria-label="Copy KEY STILL PROMPT">Copy</button></div><pre>Cinematic film still, 16:9, in the exact visual style of the approved concept art. REFERENCE MAP: @Image 1 supplies &lt;NAME&gt;'s face only. @Image 2 supplies the outfit only. @Image 3 supplies the location only. Never show a reference sheet, collage, or studio backdrop. &lt;NAME&gt;, Identity lock: &lt;PASTE THE IDENTITY LOCK STRING&gt;. She stands in the doorway with one hand on the frame, looking back over her shoulder. Location: &lt;PASTE THE LOCATION PLATE DESCRIPTION&gt;. The location from @Image 3 must fill the frame behind her; no white, blank, or empty background. Composition anchors: subject on the right third, doorway light falling across her face, sky visible in the upper left. Single frame, no split panels, no collage. Avoid: text, letters, numbers, signage, logos, subtitles, watermark, distorted faces, missing background, plain white or solid-color void, extra people, costume mismatch.</pre></div>
+<p class="why"><b>Why it works</b>Three references, three jobs, stated one by one. Without that map the model treats every image as a style reference and averages them, and you get a character in a collage. The two sentences doing the heavy lifting are "supplies the face only" and "must fill the frame behind her" — one stops the face sheet leaking into the wardrobe, the other stops the studio backdrop following the character into the scene.</p>
+</article>
+<article class="tpl" data-tags="cut">
+<div class="tpl-head"><span class="id">T05</span></div>
+<h3>The 10-Second Cut</h3>
+<div class="meta">VIDEO · I2VA · ONE SHOT · 120–250 WORDS</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">VIDEO PROMPT</span><button class="copy" type="button" aria-label="Copy VIDEO PROMPT">Copy</button></div><pre>Start from @Image1 as the exact first frame: at 0.00 seconds of the target video, @Image1 is fully referenced as [Shot 1], preserving its composition, lighting, character and wardrobe exactly.
+
+integrated_multimodal_description: [Shot 1] Live-action, cinematic, a medium shot exactly as in @Image1. &lt;LOCK STRING&gt; stands at frame left holding &lt;PROP LOCK&gt;. In the opening seconds (about 0-5 s) &lt;first change of state&gt;. Midway (about 5-10 s) &lt;second change of state&gt;. By the end (about 10-15 s) &lt;where the hand is, where the eyes are, what the mouth is doing&gt;. The camera pushes in with small amplitude at slow speed [Push in]. Lighting stays constant.
+
+overall_soundscape: &lt;wind, footsteps, cloth, breath&gt;. No voices.
+
+non_diegetic_music: N/A
+
+Constraints: one continuous shot with no cuts or transitions. No one speaks or sings; lips remain closed. No text, letters, numbers, logos, signage, subtitles or watermark anywhere in the frame. Face, hair, hands and clothing stay stable and identical to @Image1.</pre></div>
+<p class="why"><b>Why it works</b>The alignment sentence is not decoration: it tells the model that frame zero is a fact, not a mood, and it is the difference between a clip that starts on your still and one that starts near it. Three beats, each ending in a physical state, and no timestamp inside the shot — a timecode here is a wish, an end state is an instruction.</p>
+</article>
+<article class="tpl" data-tags="song">
+<div class="tpl-head"><span class="id">T06</span></div>
+<h3>The Lip-Sync Cut</h3>
+<div class="meta">VIDEO · Ref2VA · 30 S · SIX STILLS + THE AUDIO</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">VIDEO PROMPT</span><button class="copy" type="button" aria-label="Copy VIDEO PROMPT">Copy</button></div><pre>REFERENCE MAP: @Image 1-6 = key stills C01 to C06, in order. @Image 7-9 = face locks for the three singers. @Audio 1 = the vocal track for this part only (song 0.000-29.950 s).
+
+integrated_multimodal_description: [Shot 1] 0.00-5.62 s: &lt;action&gt;. The camera cranes down with large amplitude at slow speed [Crane down]. Lighting stays constant, warm low sun. The older woman with a low, warm, slightly husky voice (S1) sings: &lt;d&gt;[Korean] &lt;LYRIC LINE&gt;.&lt;/d&gt; Before 2.30 s her mouth is closed. [Shot 2] 5.62-11.24 s: &lt;action, one change of state&gt;. &lt;S2 line appears here.&gt;
+
+overall_soundscape: &lt;foley only - cloth, a gate hinge, rubber gloves&gt;. No other voices, no extra lyrics.
+
+non_diegetic_music: Provided by @Audio 1. Do not invent a different song.
+
+Constraints: one continuous shot per section, no invented cuts. Synchronise every sung line to @Audio 1. Generate the complete 30.00-second clip; do not end early. Settle and hold a clean seam frame for the next part; no sudden close-up finish.</pre></div>
+<p class="why"><b>Why it works</b>Seven of these, thirty seconds each, cut together into a three-minute video. Two lines make the seams invisible: the explicit "holds a clean seam frame" at the end, and "Provided by @Audio 1, do not invent a different song" — without the second, the model writes its own music under your vocal. Speaker IDs never change between parts, and a mouth that should be shut is stated shut, not left to chance.</p>
+</article>
+<article class="tpl" data-tags="action">
+<div class="tpl-head"><span class="id">T07</span></div>
+<h3>Six Shots in 15 Seconds</h3>
+<div class="meta">VIDEO · Ref2VA · 6 SECTIONS · 2.5 S CADENCE</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">6-SECTION PROMPT</span><button class="copy" type="button" aria-label="Copy 6-SECTION PROMPT">Copy</button></div><pre>subject_definitions: &lt;Subject 1&gt; is the young woman in &lt;Picture 1&gt;, in her twenties, black hair tied back, grey cropped hoodie, black leggings, black gloves. &lt;Subject 2&gt; is the man in &lt;Picture 2&gt;, black tee, grey shorts, shin guards.
+
+summary: The target video is a fast-cut 15-second live-action kickboxing sparring sequence in six quick shots, escalating from a cautious standoff to a spinning back kick, with every strike blocked or dodged and no injuries.
+
+retention_analysis: &lt;Subject 1&gt; (appears in [Shot 1]-[Shot 6]): fully_preserved - face, hair, hoodie, leggings, gloves; partially_preserved - the tote bag is set down in [Shot 1] and not carried after. &lt;Subject 2&gt;: fully_preserved - face, tee, shorts, guards.
+
+detailed_description: Live-action, cinematic, natural daylight in an empty plaza. [Shot 1] A wide shot between rows of folding chairs; she sets her tote bag on a chair and steps forward. [Shot 2] At 00:02.500, the shot cuts to a side-on medium shot at chest height; she throws a low kick into a jab-cross-hook and he blocks with both forearms. The camera shakes slightly with each impact. [Shot 3] At 00:05.000, a low-angle shot; his high roundhouse passes over her back as she ducks. [Shot 4] At 00:07.500, the camera arcs around them with large amplitude at fast speed as her spinning back kick drives him back. [Shot 5] At 00:10.000, a medium-wide shot; he catches her jump kick and both reset. [Shot 6] At 00:12.500, a static close shot; her high kick stops a hand's width from his face, then they touch fists. The camera pushes in with small amplitude at slow speed.
+
+overall_soundscape: Footfalls on stone, gloves thudding, sharp breaths, one shouted count. No music.
+
+non_diegetic_music: N/A</pre></div>
+<p class="why"><b>Why it works</b>Fight footage is where a 15-second clip usually turns to mush, because six ideas are asked for at once. The retention block is the fix: naming what must survive and what is allowed to change gives the model a reason to keep the two faces. And the safety rule in the summary ("every strike blocked or dodged, no injuries") is not squeamishness — it stops the model inventing a contact frame that reads as a glitch.</p>
+</article>
+<article class="tpl" data-tags="commercial">
+<div class="tpl-head"><span class="id">T08</span></div>
+<h3>The 30-Second Spot</h3>
+<div class="meta">PLANNING + IMAGE · ONE PRODUCT BEAT · NO LOGO</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PLANNING PROMPT</span><button class="copy" type="button" aria-label="Copy PLANNING PROMPT">Copy</button></div><pre>Give me three 30-second commercial directions for &lt;PRODUCT&gt;, each with a hook in the first two seconds, a single product beat between 8 and 12 seconds, a turn at 18-22 seconds, and a final frame that holds for 0.6 seconds. For each direction: the world in one line, the protagonist, the arc, the one shot that sells it, and the risk of it failing.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">CUT PROMPT — ONE PER CUT</span><button class="copy" type="button" aria-label="Copy CUT PROMPT — ONE PER CUT">Copy</button></div><pre>REFERENCE MAP: @Image 1 supplies &lt;NAME&gt;'s face only. @Image 2 supplies the outfit only. @Image 3 supplies the location only. Never show a reference sheet, collage, or studio backdrop. &lt;NAME&gt;, Identity lock: &lt;LOCK STRING&gt;. &lt;ACTION&gt;. The brand colour appears only as light: &lt;e.g. lime-green glow bleeding across wet chrome&gt;, no logo, no lettering, no packaging. Composition anchors: &lt;subject placement, negative space&gt;. Avoid: text, letters, numbers, signage, logos, subtitles, watermark, extra people, costume mismatch.</pre></div>
+<p class="why"><b>Why it works</b>Three directions before one frame is generated, because a commercial fails at the idea, not at the render. The product appears as light, never as a logo: a brand colour on wet chrome reads as a product shot without giving the model a sentence to render as lettering. Hold the last frame for 0.6 seconds and the brand colour is the last thing the viewer sees, which is the whole job.</p>
+</article>
+<article class="tpl" data-tags="planning">
+<div class="tpl-head"><span class="id">T09</span></div>
+<h3>The Continuity Line</h3>
+<div class="meta">VIDEO · ANY COSTUME OR PROP THAT CHANGES MID-FILM</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">STATE LINE — KEY STILL</span><button class="copy" type="button" aria-label="Copy STATE LINE — KEY STILL">Copy</button></div><pre>Costume state: no apron and no gloves yet; sleeves rolled to the elbow.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">STATE LINE — VIDEO</span><button class="copy" type="button" aria-label="Copy STATE LINE — VIDEO">Copy</button></div><pre>Costume state: no apron in Shot 2, apron tied from Shot 4, red rubber gloves from Shot 6, sleeves pushed up from Shot 8 and still pushed up in the final shot. Only &lt;NAME 1&gt; may wear glasses; no other character wears glasses at any point.</pre></div>
+<p class="why"><b>Why it works</b>A static description cannot hold a costume that is supposed to change. State the progression with cut numbers attached, and state it in the video prompt as well as the still, or the apron appears in shot two and the gloves vanish by the chorus. The glasses line is the same idea in reverse: one exception, named, with everyone else denied — otherwise four background characters invent spectacles.</p>
+</article>
+<article class="tpl" data-tags="planning">
+<div class="tpl-head"><span class="id">T10</span></div>
+<h3>The Motif Escalation</h3>
+<div class="meta">PLANNING · A COUNT THAT GROWS WITH THE LYRIC</div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PLANNING PROMPT</span><button class="copy" type="button" aria-label="Copy PLANNING PROMPT">Copy</button></div><pre>The chorus repeats a number: one, then two, then ten, then a hundred, then a thousand. Build the shot list so the picture counts with it, and so the count is set by the key still rather than by the video prompt. For each cut give: the count, which characters are in frame, how much of the frame is sky, the one change of state, and the camera move. Never let a cut contain more copies of the motif than its count, and never add a copy in the video prompt.</pre></div>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PER-CUT LINE</span><button class="copy" type="button" aria-label="Copy PER-CUT LINE">Copy</button></div><pre>Count in frame: 10 kites, all plain, all in the upper third of the frame. No additional kites may appear during the shot.</pre></div>
+<p class="why"><b>Why it works</b>Nineteen cuts, one motif multiplying from one kite to a thousand, and it held because the count lives in the key still and the video is forbidden from adding to it. Choose a motif with no face and a simple background — a kite against sky is stable at a thousand; a thousand faces are not. The count is also the edit: each number in the lyric is a cut point you can plan before you render anything.</p>
+</article>
+</div>
+<div class="empty" id="tempty">Nothing matches that filter. Clear the search or pick another group.</div>
+</div></section>
+<section id="library"><div class="wrap">
+<div class="sec-head">
+<div class="kicker">04 — Library</div>
+<h2>Short patterns, ready to paste</h2>
+<p>One shot each, with the camera, the light and the aspect already decided. Draft at low resolution, keep the take that keeps the motion, then upscale that take only — re-rendering at high resolution with an edited prompt is how a face changes between shots.</p>
+</div>
+<div class="lgrid" style="margin-top:28px">
+<article class="lib">
+<div class="kind">L01 · Tracking · 6 s · 16:9</div>
+<h3>Rain Street Walk-Through</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>A lone figure in a black translucent raincoat walks toward camera down a narrow neon-lit alley at night, heavy rain, wet asphalt reflecting pink and cyan signage, steam rising from a vent. Camera: slow backward tracking shot at eye level, 35mm lens, slight handheld float. Lighting: motivated by red neon on the right and cyan signage overhead, rim light on the coat, no fill on the face. Color: teal and magenta, deep blacks, fine grain. No text, no logos, no lens flare, no camera shake beyond a gentle float.</pre></div>
+<p class="tip">Ask for a backlit subject on purpose. When the face stays in shadow, you can cut the same character into five different shots and nobody notices the drift.</p>
+</article>
+<article class="lib">
+<div class="kind">L02 · Drone · 8 s · 16:9</div>
+<h3>Aerial Tower Push-In</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>Aerial night shot of a dense megacity with a single broadcast tower in the center, thousands of lit windows, traffic light trails on an elevated highway. Camera: smooth drone push-in toward the tower, starting wide at 1km and ending medium, constant speed, no roll. Lighting: city glow from below, dark blue sky, tower beacon blinking red. Color: cold blue shadows, amber street lights, high contrast. Volumetric haze over the skyline. No text, no watermarks, no warping buildings.</pre></div>
+<p class="tip">For a title card, render this once and freeze the last frame. A held aerial frame with type over it looks intentional; a moving one fights the text.</p>
+</article>
+<article class="lib">
+<div class="kind">L03 · Portrait · 8 s · 16:9</div>
+<h3>The Held Close-Up</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>Close-up of a woman in her late twenties, dark hair tied back, no makeup, wearing a grey knit sweater, sitting at a kitchen table at night. She looks down, exhales, then lifts her eyes to the lens without smiling. Camera: locked-off close-up, 85mm, very shallow depth of field, no movement. Lighting: single warm practical lamp from the left, cool window light from behind, soft shadow on the right cheek. Natural skin texture, visible pores, no beauty retouching. No text.</pre></div>
+<p class="tip">Write the emotional beat as an action sequence — looks down, exhales, lifts her eyes. Prompts that describe a change of state produce performance; adjectives produce a pose.</p>
+</article>
+<article class="lib">
+<div class="kind">L04 · Follow · 6 s · 16:9</div>
+<h3>Walking Away, Handheld</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>A man in a dark coat walks away from camera along an empty riverside path at dusk, hands in pockets, shoulders slightly hunched. Camera: handheld follow from behind at shoulder height, 40mm, gentle sway, keeping him in the lower third of the frame. Lighting: flat blue dusk, distant city lights beginning to come on, no direct sun. Color: desaturated blue-grey, soft contrast, light grain. No text, no other people, no cut.</pre></div>
+<p class="tip">Keep the subject in the lower third and you get a free title area. Shoot the same walk at dusk and at night and you have a verse and a chorus.</p>
+</article>
+<article class="lib">
+<div class="kind">L05 · Two-shot · 7 s · 16:9</div>
+<h3>Two People, One Frame</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>Two people sit across from each other at a small table in a dim apartment, a single lamp between them, neither speaking. One reaches for the other's hand and stops halfway. Camera: slow lateral dolly right, 35mm, both faces in frame, equal weight. Lighting: lamp as the only key, faces lit from below-center, deep shadow behind. Color: amber and deep brown, warm but heavy. No text, no extra people, no smiling.</pre></div>
+<p class="tip">The unresolved gesture — reaching, then stopping — is the most reliable way to get an emotional frame out of a model. Do not ask for a hug; ask for almost one.</p>
+</article>
+<article class="lib">
+<div class="kind">L06 · One take · 8 s · 16:9</div>
+<h3>Spotlight Solo, No Cuts</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>A single performer stands in a tight spotlight on a dark stage, eyes closed, singing, one hand on the mic stand. Camera: slow 180-degree orbit at waist height, 40mm, constant speed, performer centered. Lighting: one hard top spotlight, everything else black, thin rim from the back. Color: warm white key against pure black, high contrast, no color grade. No text, no audience, no strobe.</pre></div>
+<p class="tip">An orbit is the most reliable expensive-looking move: one subject, one axis, constant speed. Ask for it at waist height, where faces distort least.</p>
+</article>
+<article class="lib">
+<div class="kind">L07 · Vertical hook · 4 s · 9:16</div>
+<h3>Face Fill, First 0.5 s</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>Vertical close-up of a person's face filling the frame, eyes already on the lens, a small movement of the head as if they just turned toward camera. Slight handheld motion. Lighting: soft window light from the left, dark background. They raise one eyebrow. Camera: handheld, 24mm equivalent, subject's eyes at the upper third. Color: natural, warm skin, no filter. Frame is 9:16, subject centered, safe from UI overlays. No text, no zoom.</pre></div>
+<p class="tip">Vertical hooks have no establishing shot. Start on the face, mid-expression, and the scroll stops for the same reason a conversation does.</p>
+</article>
+<article class="lib">
+<div class="kind">L08 · Transition · 4 s · 9:16</div>
+<h3>Before / After Whip</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>Vertical shot of a person standing in a plain room, then a fast whip pan right and the same person now in full stage costume in a different location, same pose. Camera: one continuous whip pan, 26mm, motion blur at the pivot, both halves of the shot vertical 9:16. Lighting: identical soft front light on both sides of the whip so the cut hides inside the blur. Color: neutral. No text, no dissolve.</pre></div>
+<p class="tip">The trick is matched framing, not a clever effect. Put the camera at the same height and distance for both halves and the whip does the rest.</p>
+</article>
+<article class="lib">
+<div class="kind">L09 · Vertical hook · 3 s · 9:16</div>
+<h3>Object Drop, Beat Sync</h3>
+<div class="snip "><div class="snip-bar"><span class="snip-label">PROMPT</span><button class="copy" type="button" aria-label="Copy PROMPT">Copy</button></div><pre>Vertical shot of a headphone falling in slow motion onto a dark surface, catching a single rim of light, dust particles in the air, then landing exactly as the frame cuts. Camera: locked-off low angle, 50mm, shallow focus. Lighting: one hard side rim on the falling object, black background, dust visible in the beam. Color: black, chrome, one warm highlight. Frame is 9:16. No text, no hands, no splash.</pre></div>
+<p class="tip">Cut on the landing frame and the drop becomes the kick drum. This is the single most reliable three-second hook in short-form audio.</p>
+</article>
+</div>
+</div></section>
+<section id="checklist"><div class="wrap">
+<div class="sec-head">
+<div class="kicker">05 — Checklist</div>
+<h2>Before you send</h2>
+<p>Six items, in the order they fail. Nothing here is about taste: every one of these has cost a full re-render at least once.</p>
+</div>
+<div class="checkwrap" style="margin-top:26px">
+<label class="ck" for="ck1"><input type="checkbox" id="ck1"><span>The alignment sentence is the first line, and its S.SS matches the real clip length.</span></label>
+<label class="ck" for="ck2"><input type="checkbox" id="ck2"><span>Field order, spelling and the blank line between fields are unchanged.</span></label>
+<label class="ck" for="ck3"><input type="checkbox" id="ck3"><span>The last cut time is inside the clip, and the shot numbers run without a gap.</span></label>
+<label class="ck" for="ck4"><input type="checkbox" id="ck4"><span>Inside &lt;d&gt; there is a language tag and the line itself — no stage directions.</span></label>
+<label class="ck" for="ck5"><input type="checkbox" id="ck5"><span>Every &lt;Picture N&gt; / &lt;Subject N&gt; label matches an attached file, one to one.</span></label>
+<label class="ck" for="ck6"><input type="checkbox" id="ck6"><span>The two sound fields do not repeat the dialogue or the lyrics.</span></label>
+<div class="checkfoot"><span id="ckcount">0 / 6 complete</span><button type="button" id="ckreset">Reset</button></div>
+</div>
+<div class="note">Checklist state lives in this browser only — no account, no request, no server.</div>
+</div></section>
+</main>
+<footer><div class="wrap"><div class="fgrid">
+<div><div class="mark">Ludyte H3 · Prompt Skill &amp; Pack</div><p>Static page. No analytics, no cookies, no external requests, no tracking pixels.</p></div>
+<div><p>Not affiliated with Ludyte, MiniMax, or any model provider. Prompts are provided as-is — check the terms of the plan you are on before you sell what they render.</p></div>
+</div></div></footer>
+<button class="totop" type="button" aria-label="Back to top">↑</button>
+<script>
+(function(){
+  var copyBtns = document.querySelectorAll('.copy');
+  function legacy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly','');
+    ta.style.position='fixed'; ta.style.top='-1000px';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+  copyBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var snip = btn.closest('.snip');
+      var pre = snip ? snip.querySelector('pre') : null;
+      if(!pre) return;
+      var text = pre.textContent;
+      var done = function(){
+        var old = btn.getAttribute('data-old') || btn.textContent;
+        btn.setAttribute('data-old', old);
+        btn.textContent = 'Copied';
+        btn.classList.add('done');
+        clearTimeout(btn._t);
+        btn._t = setTimeout(function(){ btn.textContent = old; btn.classList.remove('done'); }, 1500);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done, function(){ legacy(text); done(); });
+      } else { legacy(text); done(); }
+    });
+  });
+
+  /* filter + search */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.tpl'));
+  var fbtns = Array.prototype.slice.call(document.querySelectorAll('.fbtn'));
+  var input = document.getElementById('tsearch');
+  var count = document.getElementById('tcount');
+  var empty = document.getElementById('tempty');
+  var active = 'all';
+  function apply(){
+    var q = (input && input.value || '').trim().toLowerCase();
+    var shown = 0;
+    cards.forEach(function(c){
+      var tags = c.getAttribute('data-tags') || '';
+      var okTag = (active === 'all') || tags.split(/\s+/).indexOf(active) > -1;
+      var okText = !q || (c.textContent || '').toLowerCase().indexOf(q) > -1;
+      var show = okTag && okText;
+      c.classList.toggle('hide', !show);
+      if(show) shown++;
+    });
+    if(count) count.textContent = shown + ' of ' + cards.length + ' templates';
+    if(empty) empty.classList.toggle('on', shown === 0);
+  }
+  fbtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      active = b.getAttribute('data-filter');
+      fbtns.forEach(function(x){ x.classList.toggle('on', x === b); });
+      apply();
+    });
+  });
+  if(input) input.addEventListener('input', apply);
+  apply();
+
+  /* checklist */
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.ck input'));
+  var label = document.getElementById('ckcount');
+  var KEY = 'ludyte-h3-checklist';
+  function save(){
+    try{
+      var state = boxes.map(function(b){ return b.checked ? 1 : 0; });
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }catch(e){}
+  }
+  function paint(){
+    var n = boxes.filter(function(b){ return b.checked; }).length;
+    if(label) label.textContent = n + ' / ' + boxes.length + ' complete';
+  }
+  try{
+    var saved = JSON.parse(localStorage.getItem(KEY) || '[]');
+    if(saved && saved.length === boxes.length){
+      boxes.forEach(function(b,i){ b.checked = !!saved[i]; });
+    }
+  }catch(e){}
+  boxes.forEach(function(b){ b.addEventListener('change', function(){ save(); paint(); }); });
+  var reset = document.getElementById('ckreset');
+  if(reset) reset.addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    save(); paint();
+  });
+  paint();
+
+  /* scrollspy */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav a'));
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function spy(){
+    var y = window.scrollY + 120, best = 0;
+    secs.forEach(function(s,i){ if(s && s.offsetTop <= y) best = i; });
+    links.forEach(function(a,i){ a.classList.toggle('on', i === best); });
+    var top = document.querySelector('.totop');
+    if(top) top.classList.toggle('on', window.scrollY > 700);
+  }
+  window.addEventListener('scroll', spy, {passive:true});
+  spy();
+  var topBtn = document.querySelector('.totop');
+  if(topBtn) topBtn.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+})();
+</script>
+</body></html>
